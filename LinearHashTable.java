@@ -1,168 +1,173 @@
+import java.util.Vector;
+
 /*
  *  Microassignment: Probing Hash Table addElement and removeElement
- *
- *  LinearHashTable: Yet another Hash Table Implementation
- * 
- *  Contributors:
- *    Bolong Zeng <bzeng@wsu.edu>, 2018
- *    Aaron S. Crandall <acrandal@wsu.edu>, 2019
- * 
- *  Copyright:
- *   For academic use only under the Creative Commons
- *   Attribution-NonCommercial-NoDerivatives 4.0 International License
- *   http://creativecommons.org/licenses/by-nc-nd/4.0
- */
+*
+*  LinearHashTable: Yet another Hash Table Implementation
+* 
+*  Contributors:
+*    Bolong Zeng <bzeng@wsu.edu>, 2018
+*    Aaron S. Crandall <acrandal@wsu.edu>, 2019
+* 
+*  Copyright:
+*   For academic use only under the Creative Commons
+*   Attribution-NonCommercial-NoDerivatives 4.0 International License
+*   http://creativecommons.org/licenses/by-nc-nd/4.0
+*/
 
 
 class LinearHashTable<K, V> extends HashTableBase<K, V>
 {
+
 	// Linear and Quadratic probing should rehash at a load factor of 0.5 or higher
-    private static final double REHASH_LOAD_FACTOR = 0.5;
-
-    // Constructors
-    public LinearHashTable()
-    {
-        super();
-    }
-
-    public LinearHashTable(HasherBase<K> hasher)
-    {
-        super(hasher);
-    }
-
-    public LinearHashTable(HasherBase<K> hasher, int number_of_elements)
-    {
-        super(hasher, number_of_elements);
-    }
-
-    // Copy constructor
-    public LinearHashTable(LinearHashTable<K, V> other)
-    {
-        super(other);
-	}
-    
+   private static final double REHASH_LOAD_FACTOR = 0.5;
    
-    // ***** MA Section Start ************************************************ //
-
-    public void addElement(K key, V value)
-    {
-        // Check for size restrictions
-        resizeCheck();
  
-        // Calculate hash based on key
-        int hash = super.getHash(key);
+   // Constructors
+   public LinearHashTable()
+   {
+       super();
+   }
 
-        // MA TODO: find empty slot to insert (update HashItem as necessary)
-        for (HashItem<K, V> item: _items)
-        {
-            if (item.isEmpty() == true)
-            {
-                // Add element to new hash table
-            	Vector<HashItem<K, V>> _items.addElement(key, value);
-            	break;
-            }
-        }
+   public LinearHashTable(HasherBase<K> hasher)
+   {
+       super(hasher);
+   }
 
-        // Remember how many things we are presently storing (size N)
-    	//  Hint: do we always increase the size whenever this function is called?
-        _number_of_elements++;
-        return null;
+   public LinearHashTable(HasherBase<K> hasher, int number_of_elements)
+   {
+       super(hasher, number_of_elements);
+   }
 
-    }
-    // Removes supplied key from hash table
-    public void removeElement(K key)
-    {
-        // Calculate hash from key
-        int hash = super.getHash(key);
+   // Copy constructor
+   public LinearHashTable(LinearHashTable<K, V> other)
+   {
+       super(other);
+	}
+   
+  
+   // ***** MA Section Start ************************************************ //
 
-        // MA TODO: find slot to remove. Remember to check for infinite loop!
-        if(containsElement(key) == true) {
-        	Vector<HashItem<K, V>> _items.removeElement(key);
-        	_number_of_elements--;
-        }
-        
-        Vector<HashItem<K, V>> _items;
-        
+   // Concrete implementation for parent's addElement method
+   public void addElement(K key, V value)
+   {	
+       // Check for size restrictions
+       resizeCheck();
 
+       // Calculate hash based on key
+       int hash = super.getHash(key);
+       HashItem<K, V> slot = _items.elementAt(hash);
+       
+       // MA TODO: find empty slot to insert (update HashItem as necessary)
+       for (HashItem<K, V> item: _items)
+       {
+           if (item.isEmpty() == true)
+           {
+              // Add element to new hash table 
+        	   slot.setIsEmpty(false);
+        	   slot.setKey(key);
+               slot.setValue(value);
+           	   break;
+           }
+       }
 
-        // Make sure decrease hashtable size
-    	//  Hint: do we always reduce the size whenever this function is called?
-        return null;
-        
-    }
-    
-    // ***** MA Section End ************************************************ //
-    
+       // Remember how many things we are presently storing (size N)
+   	//  Hint: do we always increase the size whenever this function is called?
+       _number_of_elements++;
+       return;
 
-    // Public API to get current number of elements in Hash Table
+   }
+
+   // Removes supplied key from hash table
+   public void removeElement(K key)
+   {
+       // Calculate hash from key
+	   int hash = super.getHash(key);
+       HashItem<K, V> slot = _items.elementAt(hash);
+
+       // MA TODO: find slot to remove. Remember to check for infinite loop!
+       if(slot.equals(getElement(key))== true) {
+    	   slot.setIsEmpty(false);
+    	   _number_of_elements--;
+       }
+       // Make sure decrease hashtable size
+   	//  Hint: do we always reduce the size whenever this function is called?
+       return;
+       
+   }
+   
+   // ***** MA Section End ************************************************ //
+   
+
+   // Public API to get current number of elements in Hash Table
 	public int size() {
 		return this._number_of_elements;
 	}
 
-    // Public API to test whether the Hash Table is empty (N == 0)
+   // Public API to test whether the Hash Table is empty (N == 0)
 	public boolean isEmpty() {
 		return this._number_of_elements == 0;
 	}
-    
-    // Returns true if the key is contained in the hash table
-    public boolean containsElement(K key)
-    {
-        int hash = super.getHash(key);
-        HashItem<K, V> slot = _items.elementAt(hash);
-        
-        Vector<HashItem<K, V>> _items.containsElement(key);
-        return false;
-    }
-    
-    // Returns the item pointed to by key
-    public V getElement(K key)
-    {
-        int hash = super.getHash(key);
-        HashItem<K, V> slot = _items.elementAt(hash);
-        
-        Vector<HashItem<K, V>> _items.getElement(key);
-        return null;
-    }
+   
+   // Returns true if the key is contained in the hash table
+   public boolean containsElement(K key)
+   {
+       int hash = super.getHash(key);
+       HashItem<K, V> slot = _items.elementAt(hash);
+       if(slot.getValue() != null) {
+    	   return true;
+       }else {
+       return false;
+       }
+   }
+   
+   // Returns the item pointed to by key
+   public V getElement(K key)
+   {
+       int hash = super.getHash(key);
+       HashItem<K, V> slot = _items.elementAt(hash);
+       V value =slot.getValue();
+       return value;
+   }
 
-    // Determines whether or not we need to resize
-    //  to turn off resize, just always return false
-    protected boolean needsResize()
-    {
-        // Linear probing seems to get worse after a load factor of about 50%
-        if (_number_of_elements > (REHASH_LOAD_FACTOR * _primes[_local_prime_index]))
-        {
-            return true;
-        }
-        return false;
-    }
-    
-    // Called to do a resize as needed
-    protected void resizeCheck()
-    {
-        // Right now, resize when load factor > 0.5; it might be worth it to experiment with 
-        //  this value for different kinds of hashtables
-        if (needsResize())
-        {
-            _local_prime_index++;
+   // Determines whether or not we need to resize
+   //  to turn off resize, just always return false
+   protected boolean needsResize()
+   {
+       // Linear probing seems to get worse after a load factor of about 50%
+       if (_number_of_elements > (REHASH_LOAD_FACTOR * _primes[_local_prime_index]))
+       {
+           return true;
+       }
+       return false;
+   }
+   
+   // Called to do a resize as needed
+   protected void resizeCheck()
+   {
+       // Right now, resize when load factor > 0.5; it might be worth it to experiment with 
+       //  this value for different kinds of hashtables
+       if (needsResize()){
+           _local_prime_index++;
 
-            HasherBase<K> hasher = _hasher;
-            LinearHashTable<K, V> new_hash = new LinearHashTable<K, V>(hasher, _primes[_local_prime_index]);
+           HasherBase<K> hasher = _hasher;
+           LinearHashTable<K, V> new_hash = new LinearHashTable<K, V>(hasher, _primes[_local_prime_index]);
 
-            for (HashItem<K, V> item: _items)
-            {
-                if (item.isEmpty() == false)
-                {
-                    // Add element to new hash table
-                    new_hash.addElement(item.getKey(), item.getValue());
-                }
-            }
+           for (HashItem<K, V> item: _items)
+           {
+               if (item.isEmpty() == false)
+               {
+                   // Add element to new hash table
+                   new_hash.addElement(item.getKey(), item.getValue());
+               }
+           }
 
-            // Steal temp hash object's internal vector for ourselves
-            _items = new_hash._items;
-        }
-    }
+           // Steal temp hash object's internal vector for ourselves
+           _items = new_hash._items;
+       }
+   }
 
-    // Debugging tool to print out the entire contents of the hash table
+   // Debugging tool to print out the entire contents of the hash table
 	public void printOut() {
 		System.out.println(" Dumping hash with " + _number_of_elements + " items in " + _items.size() + " buckets");
 		System.out.println("[X] Key	| Value	| Deleted");
@@ -171,5 +176,9 @@ class LinearHashTable<K, V> extends HashTableBase<K, V>
 			System.out.print("[" + i + "] ");
 			System.out.println(curr_slot.getKey() + " | " + curr_slot.getValue() + " | " + curr_slot.isEmpty());
 		}
+	}
+
+	public Vector<HashItem<K, V>> getItems() {
+		return super.getItems();
 	}
 }
