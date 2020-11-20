@@ -44,7 +44,6 @@ class LinearHashTable<K, V> extends HashTableBase<K, V>
    
     // ***** MA Section Start ************************************************ //
 
-    // Concrete implementation for parent's addElement method
     public void addElement(K key, V value)
     {
         // Check for size restrictions
@@ -70,7 +69,6 @@ class LinearHashTable<K, V> extends HashTableBase<K, V>
         return null;
 
     }
-
     // Removes supplied key from hash table
     public void removeElement(K key)
     {
