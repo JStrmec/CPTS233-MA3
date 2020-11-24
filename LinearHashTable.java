@@ -50,6 +50,8 @@ class LinearHashTable<K, V> extends HashTableBase<K, V>
   
    // ***** MA Section Start ************************************************ //
 
+   //Jocelyn Strmec GIT HUB:https://github.com/Strmec01/CPTS233-MA3.git
+   
    // Concrete implementation for parent's addElement method
    public void addElement(K key, V value)
    {	
