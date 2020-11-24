@@ -66,6 +66,7 @@ class LinearHashTable<K, V> extends HashTableBase<K, V>
    	       hash ++;
        }
        if(_items.elementAt(hash).isEmpty() == true ) {
+    	   //adds appropriate values to hashtable
     	   _items.elementAt(hash).setKey(key);
      	   _items.elementAt(hash).setValue(value);
     	   _items.elementAt(hash).setIsEmpty(false);
@@ -86,18 +87,20 @@ class LinearHashTable<K, V> extends HashTableBase<K, V>
 		 
 		 //HashItem<K, V> slot = _items.elementAt(hash);
 		 
-		if(super.hasKey(key)) {
-			int index = _items.size()-1;
-			boolean done = false;
+		if(super.hasKey(key)) {//checks if hashtable key exists
+			int index = _items.size()-1;//sets count to number of length of hashtable
+			boolean done = false;//base check for while statement
 			while(!done) {
+				//only enters removal is key is key to be removed
 				if(_items.elementAt(index).getKey()== key ) {
+			//lazy deletion with setIsEmpty, if it wasn't lazy for test cases, it'd be setKey and setValue to null
 					 _items.elementAt(index).setIsEmpty(true);
 					 _number_of_elements--;
 					 done = true;
 				}else {
-					if(index == 0)
+					if(index == 0)//prevents looping to -1 if error was made
 						break;
-					index--;
+					index--;//reduces index
 					
 				}
 			}
