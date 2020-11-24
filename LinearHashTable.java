@@ -58,18 +58,20 @@ class LinearHashTable<K, V> extends HashTableBase<K, V>
 
        // Calculate hash based on key
        int hash = super.getHash(key);
+      
        //if slot.isEmpty == False AND slot.getValue != value then 
        //while (_items.elementAt(hash).isEmpty == false) hash += 1
        //else slot.isEmppty == False and slot.getValue == value then return
-       while(_items.elementAt(hash).isEmpty() == false) {
-    	   hash += 1;
+      while(_items.elementAt(hash).isEmpty() == false) {//In case of Collision increase hash
+   	       hash ++;
        }
-       if(_items.elementAt(hash).isEmpty() == true) {
+       if(_items.elementAt(hash).isEmpty() == true ) {
     	   _items.elementAt(hash).setKey(key);
-    	   _items.elementAt(hash).setValue(value);
+     	   _items.elementAt(hash).setValue(value);
     	   _items.elementAt(hash).setIsEmpty(false);
     	   _number_of_elements++;
        }
+       
        // Remember how many things we are presently storing (size N)
    	//  Hint: do we always increase the size whenever this function is called?
        return;
@@ -78,19 +80,35 @@ class LinearHashTable<K, V> extends HashTableBase<K, V>
 
    // Removes supplied key from hash table
    public void removeElement(K key)
-   {
-       // Calculate hash from key
-	   int hash = super.getHash(key);
-    
-       // MA TODO: find slot to remove. Remember to check for infinite loop!
-       if(_items.elementAt(hash).equals(getElement(key))== true) {
-    	   _items.elementAt(hash).setIsEmpty(true);
-    	   _items.elementAt(hash).setKey(null);
-    	   _items.elementAt(hash).setValue(null);
-    	   _number_of_elements--;
-       }
-       // Make sure decrease hashtable size
-   	//  Hint: do we always reduce the size whenever this function is called?
+   {  
+	   // Calculate hash from key
+		// int hash = super.getHash(key);
+		 
+		 //HashItem<K, V> slot = _items.elementAt(hash);
+		 
+		if(super.hasKey(key)) {
+			System.out.println("\n");
+			
+			int index = super._number_of_elements;
+			boolean done = false;
+			while(!done) {
+				if(_items.elementAt(index).getKey()== key) {
+					 _items.elementAt(index).setIsEmpty(true);
+					 _number_of_elements--;
+					 done =true;
+				}else {
+					if(index == 0)
+						break;
+					index--;
+					
+				}
+			}
+	          
+		}
+	       // MA TODO: find slot to remove. Remember to check for infinite loop!
+	      
+	       // Make sure decrease hashtable size
+	   	//  Hint: do we always reduce the size whenever this function is called?
        return;
        
    }
@@ -111,8 +129,12 @@ class LinearHashTable<K, V> extends HashTableBase<K, V>
    // Returns true if the key is contained in the hash table
    public boolean containsElement(K key)
    {
-       int hash = super.getHash(key);
-       if(_items.elementAt(hash).getValue() != null) {
+      // int hash = super.getHash(key);
+       /*HashItem<K, V> slot = _items.elementAt(hash);
+       if(slot.getValue() != null) {
+    	   return true;*/
+       //}
+      if(_items.elementAt(super.getHash(key))== key) {
     	   return true;
        }else {
        return false;
@@ -123,6 +145,11 @@ class LinearHashTable<K, V> extends HashTableBase<K, V>
    public V getElement(K key)
    {
        int hash = super.getHash(key);
+		/*
+		 * HashItem<K, V> slot = _items.elementAt(hash); 
+		 * 
+		 * V value = slot.getValue()
+		 */;
        V value = _items.elementAt(hash).getValue();
        return value;
    }
