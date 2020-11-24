@@ -87,15 +87,13 @@ class LinearHashTable<K, V> extends HashTableBase<K, V>
 		 //HashItem<K, V> slot = _items.elementAt(hash);
 		 
 		if(super.hasKey(key)) {
-			System.out.println("\n");
-			
-			int index = super._number_of_elements;
+			int index = _items.size()-1;
 			boolean done = false;
 			while(!done) {
-				if(_items.elementAt(index).getKey()== key) {
+				if(_items.elementAt(index).getKey()== key ) {
 					 _items.elementAt(index).setIsEmpty(true);
 					 _number_of_elements--;
-					 done =true;
+					 done = true;
 				}else {
 					if(index == 0)
 						break;
